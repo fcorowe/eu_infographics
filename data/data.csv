@@ -1,0 +1,43 @@
+Country,Year,Data type,Source,ACMI,MEI,Used,>19 BSU
+Albania,2011,1Y,Census,13.74508659,52.48,Y,N
+Armenia,2011,1Y,Census,15.30975508,41.56,Y,N
+Austria,2010,E,Register,8.151326104,6.126824,Y,Y
+Belarus,2001,E,Register,5.7,32.57232828,Y,Y
+Belgium,2005,E,Register,10.31,5.795099,Y,Y
+Bosnia,,,,14.51341184,12.27918117,Y,N
+Bulgaria,2004,E,Register,4.5,18.93982574,Y,Y
+Croatia,2001,E,Register,2.7,1.718113,Y,Y
+Cyprus,2011,1Y,Census,3.8,6.632647615,Y,N
+Czechia,2010,E,Register,4.17,11.393822,Y,Y
+Denmark,2011,E,Register,14.76154583,4.013793,Y,Y
+Estonia,2010,E,Register,4.76,26.25,Y,Y
+Finland,2013,E,Register,16.25153969,3.746609,Y,Y
+France,2006,5Y,Census,18.77021728,15.508009,Y,Y
+Georgia,2014,1Y,Census,15.76095371,48.18,Y,N
+Germany,2009,E,Register,9.02,4.969004,Y,Y
+Greece,2001,1Y,Census,8.11,12.25,Y,Y
+Hungary,2011,E,Register,8.58,8.272594837,Y,Y
+Iceland,2018,E,Register,19.1,13.26219607,Y,N
+Ireland,2006,1Y,Census,8.067140022,13.604276,Y,Y
+Italy,2001,1Y,Census,5.1,9.907904,Y,Y
+Latvia,2005,E,Register,5.1,8.053098829,Y,N
+Lithuania,2004,E,Register,5.5,25.47192546,Y,Y
+North Macedonia,2003,E,Register,1.028246485,2.728001374,Y,Y
+Malta,1995,1Y,Census,4.7,10.43765931,Y,N
+Montenegro,2018,E,Register,14.4298584,36.9,Y,Y
+Netherlands,2010,E,Register,8.800477437,4.111721,Y,Y
+Norway,2013,E,Register,13.12807624,4.958524,Y,Y
+Poland,2010,E,Register,1.34,17.85,Y,Y
+Portugal,2011,1Y,Census,11.173,12.25,Y,Y
+Romania,2002,E,Register,1.71,12.966352,Y,Y
+Russia,2010,E,Register,2.04,23.890949,Y,Y
+Slovakia,2001,E,Register,2.7,26.32690468,Y,N
+Slovenia,2002,1Y,Census,2.5,3.505526063,Y,N
+Spain,2011,E,Register,3.1,6.33,Y,Y
+Sweden,2012,E,Register,13.8614577,3.538569,Y,Y
+Switzerland,2000,E,Register,10.7,6.195711,Y,Y
+Turkey,2012,E,Register,7.11,9.349304,Y,Y
+Ukraine,2010,E,Register,2.65,7.080658,Y,Y
+United Kingdom,2011,1Y,Census,10.55035957,4.28,Y,Y
+United States,2011,1Y,ACS,14.68465891,7.390081,Y,Y
+Japan,2000,1DR,Census,7.9,4.024519,Y,Y

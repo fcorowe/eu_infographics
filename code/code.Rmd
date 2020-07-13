@@ -1,0 +1,165 @@
+---
+title: "EU Demographic Data Sheet - Internal Migration Plots"
+output: html_notebook
+---
+
+# Import packages
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(cowplot)
+library(grid)
+library(gridExtra)
+library(extrafont)
+library(maptools)
+library(rgeos)
+library(rgdal)
+library(tmap)
+library(svglite)
+```
+
+
+# Create Bar Chart
+
+```{r}
+migr_data1 <- read.csv("./data/data.csv")
+
+GM1 <- c("Global Mean", NA, NA, NA, mean(migr_data1$ACMI), mean(migr_data1$MEI), NA, NA )
+migr_data1$Country  <- as.character(migr_data1$Country)
+migr_data1          <- rbind(migr_data1, GM1)
+migr_data1$ACMI     <- as.numeric(migr_data1$ACMI)
+migr_data1$MEI      <- as.numeric(migr_data1$MEI)
+migr_data1$ACMI     <- round(migr_data1$ACMI, digits = 3)
+migr_data1$MEI      <- round(migr_data1$MEI, digits = 3)
+
+migr_data1$X.19.BSU <- as.character(migr_data1$X.19.BSU)
+migr_data1$GM_ACMI  <- c(rep(NA, nrow(migr_data1)-1 ), migr_data1[nrow(migr_data1),"ACMI"])
+migr_data1$GM_MEI   <- c(rep(NA, nrow(migr_data1)-1 ), migr_data1[nrow(migr_data1),"MEI"])
+
+migr_data1$smallBSU <- NA
+for (i in 1:nrow(migr_data1) ) {
+  if ( !is.na(migr_data1[i,"X.19.BSU"]) && migr_data1[i,"X.19.BSU"] == "N" ) {
+    migr_data1[i,"smallBSU"] <- migr_data1[i,"MEI"]
+  }
+}
+
+migr_data1$ACMIlessGM <- NA
+for (i in 1:nrow(migr_data1) ) {
+  if ( migr_data1[i,"ACMI"] < migr_data1[nrow(migr_data1),"GM_ACMI"] ) {
+    migr_data1[i,"ACMIlessGM"] <- migr_data1[i,"ACMI"]
+  }
+}
+
+migr_data1$MEIlessGM <- NA
+for (i in 1:nrow(migr_data1) ) {
+  if ( migr_data1[i,"MEI"] < migr_data1[nrow(migr_data1),"GM_MEI"] ) {
+    migr_data1[i,"MEIlessGM"] <- migr_data1[i,"MEI"]
+  }
+}
+
+#View(migr_data1)
+```
+
+## Plot Figure
+```{r, fig.height=9}
+# ACMI
+ACMI_1 <- ggplot(data = migr_data1) +
+  geom_col( aes(x=reorder(Country, `ACMI`), y=`ACMI`), 
+            width=.7, fill="#F9A51B", colour="#F9A51B") +
+  geom_col( aes(x=reorder(Country, `ACMI`), y=`GM_ACMI`), 
+            width=.7, fill="#0D4DA1", colour="#0D4DA1") +
+  geom_col( aes(x=reorder(Country, `ACMI`), y=`ACMIlessGM`), 
+            width=.7, fill="#3776A9", colour="#3776A9") +
+  coord_flip() +
+  theme_void() +
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), 
+        axis.text.x = element_blank(),
+        axis.text=element_text(size=12, hjust=1.0),
+        text=element_text(family="Arial Narrow"),
+        panel.background = element_rect(fill = "#C6D8E9", colour = NA),
+        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")
+        ) +
+  geom_text(data = subset(migr_data1, ACMI > 2.8), 
+            aes(x=Country, y=0.5*ACMI, label=sprintf("%0.1f", round(ACMI, digits = 1))), 
+            size = 3.3, colour="white", fontface = "bold" ) +
+  geom_text(data = subset(migr_data1, ACMI < 2.8), 
+            aes(x=Country, y=ACMI+0.5, label=sprintf("%0.1f", round(ACMI, digits = 1)), hjust=0), 
+            size = 3.3, colour="#231F20", fontface = "bold" )
+ACMI_2 <- cowplot::ggdraw(ACMI_1) + 
+  theme(plot.background = element_rect(fill="#C6D8E9", color = NA))
+
+
+# MEI
+MEI_1 <- ggplot(data=migr_data1) +
+  geom_col( aes(x=reorder(Country, `MEI`), y=`MEI`), 
+            width=.7, fill="#F9A51B", colour="#F9A51B") +
+  geom_col( aes(x=reorder(Country, `MEI`), y=`GM_MEI`), 
+            width=.7, fill="#0D4DA1", colour="#0D4DA1") +
+  geom_col( aes(x=reorder(Country, `MEI`), y=`MEIlessGM`), 
+            width=.7, fill="#3776A9", colour="#3776A9") +
+  coord_flip() +
+  theme_void() +
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), 
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(family="Arial Narrow"),
+        axis.text=element_text(size=12, hjust=1.0),
+        panel.background = element_rect(fill = "#C6D8E9", colour = NA),
+        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")
+        ) +
+  geom_text(data = subset(migr_data1, MEI > 7.9), 
+            aes(x=Country, y=0.5*MEI, label=sprintf("%0.1f", round(MEI, digits = 1))), 
+            size = 3.3, colour="white", fontface = "bold" ) +
+  geom_text(data = subset(migr_data1, MEI < 7.9), 
+            aes(x=Country, y=MEI+1.5, label=sprintf("%0.1f", round(MEI, digits = 1)), hjust = 0), 
+            size = 3.3, colour="#231F20", fontface = "bold" )
+MEI_2 <- cowplot::ggdraw(MEI_1) + 
+  theme(plot.background = element_rect(fill="#C6D8E9", color = NA))
+
+
+# Spacing Plot
+white <- ggplot() + theme_void()
+
+
+# Title Plot
+title <- ggplot() +
+  scale_x_continuous(limits = c(0, 1)) +
+  scale_y_continuous(limits = c(0, 1)) +
+  annotate("text", x = 0.188, y = 0.5,
+           label = "Country Rankings", fontface = "bold", 
+           family="Arial Narrow", colour="#006BA4", 
+           size = 9 ) +
+  theme_void()
+
+# Label Plots
+ACMI_Label <- ggplot() +
+  scale_x_continuous(limits = c(0, 1)) +
+  scale_y_continuous(limits = c(0, 1)) +
+  annotate("text", x = 0.435, y = 0.5,
+           label = "Aggregate Crude Migration Intensity (ACMI)", fontface = "bold", 
+           family="Arial Narrow", colour="#231F20", 
+           size = 4 ) +
+  theme_void()
+MEI_Label <- ggplot() +
+  scale_x_continuous(limits = c(0, 1)) +
+  scale_y_continuous(limits = c(0, 1)) +
+  annotate("text", x = 0.307, y = 0.5,
+           label = "Migration Efficiency Index (MEI)", fontface = "bold", 
+           family="Arial Narrow", colour="#231F20", 
+           size = 4 ) +
+  theme_void()
+
+# Create PNG
+png("./output/barchart.png", units="px", width=2489, height=2644, res=300)
+grid.newpage()
+grid.arrange(title,
+             arrangeGrob(white, ACMI_2, white, MEI_2, white, ncol = 5,
+                         widths = c(0.07, 1, 0.07, 1, 0.07) ),
+             arrangeGrob(white, ACMI_Label, white, MEI_Label, white, ncol = 5,
+                         widths = c(0.07, 1, 0.07, 1, 0.07) ),
+             white,
+             ncol = 1, heights = c(0.15, 1, 0.06, 0.04))
+dev.off()
+```
+
+
+
