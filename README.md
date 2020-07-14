@@ -12,7 +12,7 @@ F.Rowe-Gonzalez@liverpool.ac.uk
 
 ## Code
 
-If you would like to replicate this map, here is the code:
+If you would like to replicate the bar chart, here is the code:
 
 [Code](code/code.R)
 
