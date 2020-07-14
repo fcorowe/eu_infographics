@@ -22,7 +22,7 @@ library(svglite)
 # Create Bar Chart
 
 ```{r}
-migr_data1 <- read.csv("./data/data.csv")
+migr_data1 <- read.csv("../data/data.csv")
 
 GM1 <- c("Global Mean", NA, NA, NA, mean(migr_data1$ACMI), mean(migr_data1$MEI), NA, NA )
 migr_data1$Country  <- as.character(migr_data1$Country)
@@ -149,7 +149,7 @@ MEI_Label <- ggplot() +
   theme_void()
 
 # Create PNG
-png("./output/barchart.png", units="px", width=2489, height=2644, res=300)
+png("../output/barchart.png", units="px", width=2489, height=2644, res=300)
 grid.newpage()
 grid.arrange(title,
              arrangeGrob(white, ACMI_2, white, MEI_2, white, ncol = 5,
